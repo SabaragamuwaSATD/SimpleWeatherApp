@@ -7,7 +7,7 @@ const app = express();
 
 app.get("/", function(req, res){
 
-    const url = "https://api.weatherapi.com/v1/current.json?key=cb2ed386093e43ed8c5173555241803&q=Sri Lanka&aqi=no";
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=Sri%20Lanka&appid=f4fd710ce21e2656424a1b79a61501e4&units=metric";
 
     https.get(url, function(response){
         console.log(response);
@@ -15,12 +15,15 @@ app.get("/", function(req, res){
 
         response.on("data", function(data){
             const weatherData = JSON.parse(data);
-            const temp = weatherData.current.temp_c;
-            console.log(temp);
-            const condition = weatherData.current.condition;
-            console.log(condition);
+            const temp = weatherData.main.temp;
+            const condition = weatherData.weather[0].description;
+            const wind = weatherData.wind.speed;
+            res.write("<h1>The temperature in Sri Lanka is: ===> " + temp + " <=== degrees celsius</h1>");
+            res.write("<h1>The condition in Sri Lanka is: ===> " + condition + " <===</h1>");
+            res.write("<h1>The wind speed in Sri Lanka is: ===> " + wind + " <===</h1>");
 
-            res.send(`<h1>The temperature in Sri Lanka is: ===> ${temp} <=== degrees celsius</h1>`);
+
+            //res.send();
         })
     })
 
